@@ -42,7 +42,6 @@ public class GameLoop implements Runnable {
 	private void init() {
 		// initialise the GSM and anything else
 		gsm = new GameStateManager();
-		gsm.setState(0);
 
 	}
 
