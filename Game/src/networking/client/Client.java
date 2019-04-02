@@ -38,9 +38,14 @@ public class Client extends Thread {
 				String serverMessage = (String)in.readObject();
 				System.out.println("### LOBBY DATA ###");
 				System.out.println(serverMessage);
+				
+				if (serverMessage.equals("CC")) {
+					running = false;
+				}
 			}
 
 			// when the client sender terminates
+			clientSender.close();
 			clientSender.join();
 			out.close();
 			in.close();
@@ -60,11 +65,10 @@ public class Client extends Thread {
 	
 	public void send(String s) {
 		clientSender.send(s);
-		
-		//might get concurrency issues if it doesn't send.
-		if (s.length() > 0 && s.substring(0, 2).equals("CC")) {
-			clientSender.close();
-			running = false;
-		}
+//		
+//		//might get concurrency issues if it doesn't send.
+//		if (s.length() > 0 && s.substring(0, 2).equals("CC")) {
+//			clientSender.close();
+//		}
 	}
 }

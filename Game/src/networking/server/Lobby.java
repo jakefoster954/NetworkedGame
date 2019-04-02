@@ -2,7 +2,9 @@ package networking.server;
 
 import java.util.ArrayList;
 
-public class Lobby {
+public class Lobby extends Thread {
+	private boolean running;
+	
 	private int maxSize;
 	private String lobbyName;
 	private ArrayList<User> users;
@@ -12,6 +14,8 @@ public class Lobby {
 		this.lobbyName = lobbyName.replaceAll("\\s+", "_");
 		users = new ArrayList<User>();
 		users.add(host);
+		
+		this.start();
 	}
 	
 	public Lobby(User host, String lobbyName) {
@@ -19,6 +23,37 @@ public class Lobby {
 		this.lobbyName =  lobbyName.replaceAll("\\s+", "_");
 		users = new ArrayList<User>();
 		users.add(host);
+		
+		this.start();
+	}
+	
+	@Override
+	public void run() {
+		running = true;
+		double time = 0;
+		int delay = 5000;
+		
+		while (running) {
+			
+			while (!allReady()) {
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {System.out.println("Thread.sleep Failed");}
+				time = System.currentTimeMillis();
+			}
+			
+			while(allReady()) {
+				if ((System.currentTimeMillis() - time) > delay) {
+					for (User u: users) {
+						u.setReady(false);
+					}
+					System.out.println("START GAME");
+					Server.removeLobby(this);
+					running = false;
+					break;
+				}
+			}
+		}
 	}
 	
 	public String getLobbyName() {
@@ -66,5 +101,9 @@ public class Lobby {
 			}
 		}
 		return true;
+	}
+	
+	public void close() {
+		running = false;
 	}
 }

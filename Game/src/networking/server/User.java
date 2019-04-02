@@ -57,21 +57,25 @@ public class User extends Thread {
 			userSender.send(Server.getLobbies());
 			break;
 		case "CL": //create lobby
+			ready = false;
 			if (!Server.createLobby(this, message)) System.out.println("Lobby was not created!");
 			break;
 		case "JL": //join lobby
+			ready = false;
 			if (!Server.joinLobby(this, message)) System.out.println("Lobby was not joined!");
 			break;
 		case "LL": //leave lobby
 			if (!Server.leaveLobby(this)) System.out.println("Lobby was not left!");
-			ready = false;
 			break;
 		case "RU": //ready up
 			ready = !ready;
 			break;
 		case "CC": //close client
-			userSender.send("Removing user");
+			userSender.send("CC");
 			userSender.close(); //might close before it sends. CONCURRENCY :(
+			try {
+				userSender.join();
+			} catch (InterruptedException e) {System.out.println("userSender.join");}
 			running = false;
 			Server.deleteUser(this);
 			break;
@@ -88,5 +92,9 @@ public class User extends Thread {
 	
 	public boolean isReady() {
 		return ready;
+	}
+	
+	public void setReady(boolean ready) {
+		this.ready = ready;
 	}
 }

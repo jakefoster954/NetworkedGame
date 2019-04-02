@@ -13,7 +13,7 @@ public abstract class Server {
 
 	private static ArrayList<Lobby> lobbies = new ArrayList<Lobby>();
 	private static ArrayList<User> users = new ArrayList<User>();
-	
+
 	public static void main(String[] args) {
 		running = true;
 
@@ -36,7 +36,7 @@ public abstract class Server {
 				users.add(user);
 			}
 
-		// Don't think i close streams... 
+			// Don't think i close streams...
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error("IOException");
@@ -44,29 +44,29 @@ public abstract class Server {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static String getLobbies() {
 		String s = "";
-		for (Lobby l: lobbies) {
+		for (Lobby l : lobbies) {
 			s += l.toString();
 			s += "\n";
 		}
 		if (s.length() > 0) {
-			s = s.substring(0, s.length()-1);
+			s = s.substring(0, s.length() - 1);
 		}
 		return s;
 	}
-	
+
 	public static boolean createLobby(User u, String lobbyName) {
-		//check lobby name doesn't already exist
-		for (Lobby l: lobbies) {
+		// check lobby name doesn't already exist
+		for (Lobby l : lobbies) {
 			if (l.getLobbyName().equals(lobbyName)) {
 				return false;
 			}
 		}
-		
+
 		// find the user that wants to create the lobby and remove them from users.
-		for (User user: users) {
+		for (User user : users) {
 			if (u == user) {
 				lobbies.add(new Lobby(u, lobbyName));
 				users.remove(user);
@@ -75,11 +75,11 @@ public abstract class Server {
 		}
 		return false;
 	}
-	
+
 	public static boolean joinLobby(User u, String lobbyName) {
-		//check user isn't already in a lobby
+		// check user isn't already in a lobby
 		boolean located = false;
-		for (User user: users) {
+		for (User user : users) {
 			if (user == u) {
 				located = true;
 				break;
@@ -88,9 +88,9 @@ public abstract class Server {
 		if (located == false) {
 			return false;
 		}
-		
-		//find the lobby with the name matching the required lobby
-		for (Lobby l: lobbies) {
+
+		// find the lobby with the name matching the required lobby
+		for (Lobby l : lobbies) {
 			if (l.getLobbyName().equals(lobbyName) && l.getAvailableSpace() > 0) {
 				l.addUser(u);
 				users.remove(u);
@@ -99,28 +99,33 @@ public abstract class Server {
 		}
 		return false;
 	}
-	
+
 	public static boolean leaveLobby(User u) {
-		//get the lobby name
+		// get the lobby name
 		Lobby l = getLobby(u);
-			for (User user: l.getUsers()) {
-				if (user == u) {
-					users.add(u);
-					//check to see if the user is the only member of the lobby
-					if (l.getUsers().size() == 1) {
-						lobbies.remove(l);
-						return true;
-					} else {
-						return l.removeUser(u);
-					}
+		if (l==null) {
+			return false;
+		}
+		
+		for (User user : l.getUsers()) {
+			if (user == u) {
+				users.add(u);
+				// check to see if the user is the only member of the lobby
+				if (l.getUsers().size() == 1) {
+					l.close();
+					lobbies.remove(l);
+					return true;
+				} else {
+					return l.removeUser(u);
 				}
 			}
+		}
 		return false;
 	}
-	
+
 	public static Lobby getLobby(User u) {
-		for (Lobby l: lobbies) {
-			for (User user: l.getUsers()) {
+		for (Lobby l : lobbies) {
+			for (User user : l.getUsers()) {
 				if (user == u) {
 					return l;
 				}
@@ -128,12 +133,24 @@ public abstract class Server {
 		}
 		return null;
 	}
-	
+
 	public static boolean deleteUser(User u) {
 		leaveLobby(u);
-		for (User user: users) {
+		for (User user : users) {
 			if (u == user) {
 				users.remove(user);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// THIS DOES NOT DELETE THE USERS. THE LINK TO THE USERS CAN BE PASSED TO THE
+	// GAME THREAD!!!
+	public static boolean removeLobby(Lobby lobby) {
+		for (Lobby l : lobbies) {
+			if (lobby == l) {
+				lobbies.remove(l);
 				return true;
 			}
 		}
