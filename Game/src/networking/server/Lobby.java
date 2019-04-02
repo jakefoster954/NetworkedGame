@@ -2,6 +2,8 @@ package networking.server;
 
 import java.util.ArrayList;
 
+import gamelogic.GameLoop;
+
 public class Lobby extends Thread {
 	private boolean running;
 	
@@ -47,8 +49,11 @@ public class Lobby extends Thread {
 					for (User u: users) {
 						u.setReady(false);
 					}
+					//start the game
 					System.out.println("START GAME");
 					Server.gameStarted(this);
+					GameLoop game = new GameLoop(this);
+					game.start();
 					running = false;
 					break;
 				}

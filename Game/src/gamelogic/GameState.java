@@ -1,18 +1,44 @@
 package gamelogic;
 
-public abstract class GameState {
+import gamelogic.tilemap.Tilemap;
+import networking.server.Lobby;
 
-	protected GameStateManager gsm;
-
-	public GameState(GameStateManager gsm) {
-		this.gsm = gsm;
-
-		init();
+public class GameState extends State {
+	
+	//Networking Stuff
+	private Lobby lobby;
+	
+	public GameState(Lobby lobby) {
+		super();
+		
+		this.lobby = lobby;
+	}
+	
+	public GameState() {
+		super();
+		
+		lobby = null;
 	}
 
-	public abstract void init();
+	@Override
+	public void init() {
+		int[][] temp = {{0,0,0},
+						{0,0,0},
+						{0,0,0}};
+		Tilemap tm = new Tilemap(temp);
+		tm.print();
+		System.out.println();
+		System.out.println(tm.toString());
+	}
 
-	public abstract void update();
+	@Override
+	public void update() {
+		//System.out.println("update");
+	}
 
-	public abstract void render();
+	@Override
+	public void render() {
+		//System.out.println("render");
+	}
+	
 }

@@ -2,6 +2,8 @@ package gamelogic;
 
 import org.apache.log4j.Logger;
 
+import networking.server.Lobby;
+
 public class GameLoop implements Runnable {
 	// logger
 	private final static Logger logger = Logger.getLogger(gamelogic.GameLoop.class);
@@ -11,22 +13,20 @@ public class GameLoop implements Runnable {
 	private boolean running;
 
 	// game state
-	private GameStateManager gsm;
+	private GameState game;
 
+	public GameLoop(Lobby l) {
+		game = new GameState(l);
+	}
+	
 	public GameLoop() {
-		init();
+		System.out.println("Lobby Not Provided");
+		game = new GameState();
 	}
 
 	public void start() {
 		thread = new Thread(this);
-		// listener?
 		thread.start();
-	}
-
-	private void init() {
-		// initialise the GSM and anything else
-		gsm = new GameStateManager();
-
 	}
 
 	@Override
@@ -55,10 +55,10 @@ public class GameLoop implements Runnable {
 	}
 
 	private void update() {
-		gsm.update();
+		game.update();
 	}
 
 	private void render() {
-		gsm.render();
+		game.render();
 	}
 }
