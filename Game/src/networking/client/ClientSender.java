@@ -27,6 +27,10 @@ public class ClientSender extends Thread {
 				// wait for message to be added to blocking queue
 				String message = messagesToSend.take();
 				out.writeObject(message);
+				
+				if (message.length() >= 2 && message.substring(0,2).equals("CC")) {
+					running = false;
+				}
 			}
 		} catch (IOException e) {
 			System.out.println("The Object couldn't be sent");

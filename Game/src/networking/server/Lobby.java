@@ -48,7 +48,7 @@ public class Lobby extends Thread {
 						u.setReady(false);
 					}
 					System.out.println("START GAME");
-					Server.removeLobby(this);
+					Server.gameStarted(this);
 					running = false;
 					break;
 				}

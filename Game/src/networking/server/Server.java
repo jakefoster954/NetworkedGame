@@ -11,6 +11,7 @@ public abstract class Server {
 
 	private static boolean running;
 
+	private static ArrayList<Lobby> gamesInProgress = new ArrayList<Lobby>();
 	private static ArrayList<Lobby> lobbies = new ArrayList<Lobby>();
 	private static ArrayList<User> users = new ArrayList<User>();
 
@@ -147,9 +148,10 @@ public abstract class Server {
 
 	// THIS DOES NOT DELETE THE USERS. THE LINK TO THE USERS CAN BE PASSED TO THE
 	// GAME THREAD!!!
-	public static boolean removeLobby(Lobby lobby) {
+	public static boolean gameStarted(Lobby lobby) {
 		for (Lobby l : lobbies) {
 			if (lobby == l) {
+				gamesInProgress.add(lobby);
 				lobbies.remove(l);
 				return true;
 			}
