@@ -48,6 +48,7 @@ public class Lobby {
 	public ArrayList<User> getUsers() {
 		return users;
 	}
+	
 	public boolean removeUser(User u) {
 		for (User user: users) {
 			if (u == user) {
@@ -56,5 +57,14 @@ public class Lobby {
 			}
 		}
 		return false;
+	}
+	
+	public boolean allReady() {
+		for (User user: users) {
+			if (!user.isReady()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
