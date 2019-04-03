@@ -2,10 +2,10 @@ package gamelogic;
 
 public abstract class State {
 
-	public abstract void init();
+	protected abstract void init();
 
-	public abstract void update();
+	protected abstract void update();
 
-	public abstract void render();
+	protected abstract void render();
 
 }

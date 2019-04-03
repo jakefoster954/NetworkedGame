@@ -18,11 +18,6 @@ public class GameLoop implements Runnable {
 	public GameLoop(Lobby l) {
 		game = new GameState(l);
 	}
-	
-	public GameLoop() {
-		System.out.println("Lobby Not Provided");
-		game = new GameState();
-	}
 
 	public void start() {
 		thread = new Thread(this);

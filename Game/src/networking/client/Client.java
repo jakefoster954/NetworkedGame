@@ -4,11 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 import org.apache.log4j.Logger;
-
-import networking.server.Server;
 
 public class Client extends Thread {
 
@@ -42,7 +39,6 @@ public class Client extends Thread {
 			}
 
 			// when the client sender terminates
-			//clientSender.close();
 			clientSender.join();
 			out.close();
 			in.close();
@@ -90,6 +86,11 @@ public class Client extends Thread {
 	}
 	
 	public void send(String s) {
+		while (clientSender == null) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {System.out.println("Thread.sleep failed");}
+		}
 		clientSender.send(s);
 	}
 }

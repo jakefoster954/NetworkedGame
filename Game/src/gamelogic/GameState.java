@@ -14,33 +14,24 @@ public class GameState extends State {
 		
 		init();
 	}
-	
-	public GameState() {
-		lobby = null;
-		
-		init();
-	}
 
 	@Override
-	public void init() {
+	protected void init() {
 		int[][] temp = new int[8][8]; //auto initialised to 0
 		Tilemap tm = new Tilemap(temp);
 		//send the tilemap to all users.
-		if (lobby != null) {
-			for (User u: lobby.getUsers()) {
-				u.send("TM" + tm.toString());
-			}
+		for (User u: lobby.getUsers()) {
+			u.send("TM" + tm.toString());
 		}
-		tm.print();
 	}
 
 	@Override
-	public void update() {
+	protected void update() {
 		//System.out.println("update");
 	}
 
 	@Override
-	public void render() {
+	protected void render() {
 		//System.out.println("render");
 	}
 	

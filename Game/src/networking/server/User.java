@@ -72,7 +72,6 @@ public class User extends Thread {
 			break;
 		case "CC": //close client
 			userSender.send("CC");
-			userSender.close(); //might close before it sends. CONCURRENCY :(
 			try {
 				userSender.join();
 			} catch (InterruptedException e) {System.out.println("userSender.join");}
@@ -99,6 +98,11 @@ public class User extends Thread {
 	}
 	
 	public void send(String s) {
+		while (userSender == null) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {System.out.println("Thread.sleep failed");}
+		}
 		userSender.send(s);
 	}
 }

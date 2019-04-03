@@ -45,7 +45,7 @@ public class MapCreator {
 		return keyArray;
 	}
 
-	public static void print2DArray(String[][] a) {
+	private static void print2DArray(String[][] a) {
 		for (int j = 0; j < a.length; j++) {
 			for (int i = 0; i < a[0].length; i++) {
 				System.out.print(a[j][i] + " ");
@@ -54,7 +54,7 @@ public class MapCreator {
 		}
 	}
 
-	public static void print2DArray(int[][] a) {
+	private static void print2DArray(int[][] a) {
 		for (int j = 0; j < a.length; j++) {
 			for (int i = 0; i < a[0].length; i++) {
 				if (a[j][i] < 10) {

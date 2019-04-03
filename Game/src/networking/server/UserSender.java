@@ -26,6 +26,10 @@ public class UserSender extends Thread {
 				// wait for message to be added to blocking queue
 				String message = messagesToSend.take();
 				out.writeObject(message);
+				
+				if (message.startsWith("CC")) {
+					running = false;
+				}
 			}
 		} catch (IOException e) {
 			System.out.println("The Object couldn't be sent");
@@ -38,9 +42,5 @@ public class UserSender extends Thread {
 	
 	public void send(String s) {
 		messagesToSend.add(s);
-	}
-
-	public void close() {
-		running = false;
 	}
 }

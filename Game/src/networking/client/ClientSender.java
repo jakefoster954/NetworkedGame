@@ -28,7 +28,7 @@ public class ClientSender extends Thread {
 				String message = messagesToSend.take();
 				out.writeObject(message);
 				
-				if (message.length() >= 2 && message.substring(0,2).equals("CC")) {
+				if (message.startsWith("CC")) {
 					running = false;
 				}
 			}
@@ -44,8 +44,4 @@ public class ClientSender extends Thread {
 	public void send(String s) {
 		messagesToSend.add(s);
 	}
-/*
-	public void close() {
-		running = false;
-	}*/
 }
