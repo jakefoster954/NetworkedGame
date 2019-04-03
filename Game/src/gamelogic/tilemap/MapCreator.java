@@ -66,6 +66,7 @@ public class MapCreator {
 		}
 	}
 
+	//change this to 0 and 1
 	private static void mapHexToKey(String[][] hexArray, int[][] keyArray) {
 		for (int j = 0; j < hexArray.length; j++) {
 			for (int i = 0; i < hexArray[0].length; i++) {

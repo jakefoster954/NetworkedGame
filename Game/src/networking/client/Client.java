@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
+import networking.server.Server;
+
 public class Client extends Thread {
 
 	// logger
@@ -36,16 +38,11 @@ public class Client extends Thread {
 
 			while (running) {
 				String serverMessage = (String)in.readObject();
-				System.out.println("### LOBBY DATA ###");
-				System.out.println(serverMessage);
-				
-				if (serverMessage.equals("CC")) {
-					running = false;
-				}
+				if (!decodeMessage(serverMessage)) System.out.println("Invalid message format");
 			}
 
 			// when the client sender terminates
-			clientSender.close();
+			//clientSender.close();
 			clientSender.join();
 			out.close();
 			in.close();
@@ -63,12 +60,36 @@ public class Client extends Thread {
 		}
 	}
 	
+	public boolean decodeMessage(String s) {
+		if (s.length() < 2) {
+			return false;
+		}
+		String command = s.substring(0, 2);
+		String message = s.substring(2);
+		
+		switch(command) {
+		case "CC": //close connection
+			running = false;
+			break;
+		case "LD": //lobby data
+			System.out.println("### LOBBY DATA ###");
+			System.out.println(message);
+			break;
+		case "SG": //start game
+			System.out.println("###GAME START###");
+			break;
+		case "TM":
+			System.out.println("###TILEMAP###");
+			System.out.println(message);
+			break;
+		default:
+			return false;
+		}
+		return true;
+		
+	}
+	
 	public void send(String s) {
 		clientSender.send(s);
-//		
-//		//might get concurrency issues if it doesn't send.
-//		if (s.length() > 0 && s.substring(0, 2).equals("CC")) {
-//			clientSender.close();
-//		}
 	}
 }

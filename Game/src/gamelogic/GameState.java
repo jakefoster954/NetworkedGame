@@ -2,6 +2,7 @@ package gamelogic;
 
 import gamelogic.tilemap.Tilemap;
 import networking.server.Lobby;
+import networking.server.User;
 
 public class GameState extends State {
 	
@@ -9,26 +10,28 @@ public class GameState extends State {
 	private Lobby lobby;
 	
 	public GameState(Lobby lobby) {
-		super();
-		
 		this.lobby = lobby;
+		
+		init();
 	}
 	
 	public GameState() {
-		super();
-		
 		lobby = null;
+		
+		init();
 	}
 
 	@Override
 	public void init() {
-		int[][] temp = {{0,0,0},
-						{0,0,0},
-						{0,0,0}};
+		int[][] temp = new int[8][8]; //auto initialised to 0
 		Tilemap tm = new Tilemap(temp);
+		//send the tilemap to all users.
+		if (lobby != null) {
+			for (User u: lobby.getUsers()) {
+				u.send("TM" + tm.toString());
+			}
+		}
 		tm.print();
-		System.out.println();
-		System.out.println(tm.toString());
 	}
 
 	@Override
@@ -39,6 +42,14 @@ public class GameState extends State {
 	@Override
 	public void render() {
 		//System.out.println("render");
+	}
+	
+	public void keyPressed(int key) {
+		//specify movement stuff
+	}
+	
+	public void keyReleased(int key) {
+		//specify movement stuff
 	}
 	
 }

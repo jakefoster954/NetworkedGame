@@ -48,6 +48,7 @@ public class Lobby extends Thread {
 				if ((System.currentTimeMillis() - time) > delay) {
 					for (User u: users) {
 						u.setReady(false);
+						u.send("SG");
 					}
 					//start the game
 					System.out.println("START GAME");

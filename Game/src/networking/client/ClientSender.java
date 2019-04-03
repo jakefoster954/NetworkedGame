@@ -44,8 +44,8 @@ public class ClientSender extends Thread {
 	public void send(String s) {
 		messagesToSend.add(s);
 	}
-
+/*
 	public void close() {
 		running = false;
-	}
+	}*/
 }

@@ -54,7 +54,7 @@ public class User extends Thread {
 			this.username = message;
 			break;
 		case "RD": //request data (Regarding lobbies)
-			userSender.send(Server.getLobbies());
+			userSender.send("LD" + Server.getLobbies());
 			break;
 		case "CL": //create lobby
 			ready = false;
@@ -96,5 +96,9 @@ public class User extends Thread {
 	
 	public void setReady(boolean ready) {
 		this.ready = ready;
+	}
+	
+	public void send(String s) {
+		userSender.send(s);
 	}
 }
