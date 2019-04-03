@@ -15,10 +15,13 @@ public class GameLoop implements Runnable {
 	// game state
 	private GameState game;
 	
+	private Lobby lobby;
+	
 	private int maxFPS = 2;
 
-	public GameLoop(Lobby l) {
-		game = new GameState(l);
+	public GameLoop(Lobby lobby) {
+		this.lobby = lobby;
+		game = new GameState(lobby);
 	}
 
 	public void start() {
@@ -55,7 +58,10 @@ public class GameLoop implements Runnable {
 					logger.fatal("Thread.sleep failed");
 				}
 			}
+			
+			if (lobby.getUsers().size() == 0) {
+				running = false;
+			}
 		}
-
 	}
 }

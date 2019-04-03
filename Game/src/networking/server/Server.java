@@ -114,7 +114,9 @@ public abstract class Server {
 				// check to see if the user is the only member of the lobby
 				if (l.getUsers().size() == 1) {
 					l.close();
+					l.removeUser(u);
 					lobbies.remove(l);
+					gamesInProgress.remove(l);
 					return true;
 				} else {
 					return l.removeUser(u);
@@ -126,6 +128,13 @@ public abstract class Server {
 
 	public static Lobby getLobby(User u) {
 		for (Lobby l : lobbies) {
+			for (User user : l.getUsers()) {
+				if (user == u) {
+					return l;
+				}
+			}
+		}
+		for (Lobby l : gamesInProgress) {
 			for (User user : l.getUsers()) {
 				if (user == u) {
 					return l;
