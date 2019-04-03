@@ -26,6 +26,21 @@ public class Tilemap implements Serializable {
 		this.tilemap = tilemap;
 		tileWidth = tileHeight = 64;
 	}
+	
+	public Tilemap(String filePath, int tileSize) {
+		tilemap = MapCreator.makeMap(filePath);
+		tileWidth = tileHeight = tileSize;
+	}
+	
+	public Tilemap(BufferedImage i, int tileSize) {
+		tilemap = MapCreator.makeMap(i);
+		tileWidth = tileHeight = tileSize;
+	}
+	
+	public Tilemap(int[][] tilemap, int tileSize) {
+		this.tilemap = tilemap;
+		tileWidth = tileHeight = tileSize;
+	}
 
 	public boolean onGround(Rectangle r) {
 		if (!isColliding(r)) {

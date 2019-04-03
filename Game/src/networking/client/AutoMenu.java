@@ -20,14 +20,24 @@ public class AutoMenu {
 		client.send("RD");
 		
 		//change state from lobby to game
+		//W = 87
+		//A = 65
+		//S = 83
+		//D = 68
 		Scanner s = new Scanner(System.in);
 		while (true) {
 			String input = s.nextLine();
+
+			//for movement. WONT BE NEEDED IN GUI. 'KeyEvent' CAN BE USED INSTEAD!
+			if (input.startsWith("KP") || input.startsWith("KR")) {
+				if (input.length() > 2) {
+					input = input.substring(0,2) + (int)input.charAt(2);
+				}
+			}
+			
 			client.send(input);
 			
-			System.out.println(input);
 			if (input.startsWith("CC")) {
-				System.out.println("here");
 				break;
 			}
 		}

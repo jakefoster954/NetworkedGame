@@ -3,6 +3,7 @@ package networking.server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 
 public class User extends Thread {
 
@@ -15,10 +16,14 @@ public class User extends Thread {
 	private String username;
 	private boolean ready;
 	
+	private boolean[] userInputs;
+	
 	public User(ObjectInputStream in, ObjectOutputStream out) {
 		this.in = in;
 		userSender = new UserSender(out);
 		userSender.start();
+		userInputs = new boolean[128];
+		Arrays.fill(userInputs, false);
 		
 		ready = false;
 	}
@@ -70,6 +75,20 @@ public class User extends Thread {
 		case "RU": //ready up
 			ready = !ready;
 			break;
+		case "KP": //key pressed
+			try {
+				userInputs[Integer.parseInt(message)] = true;
+			} catch(Exception e) {
+				return false;
+			}
+			break;
+		case "KR": //key released
+			try {
+				userInputs[Integer.parseInt(message)] = false;
+			} catch(Exception e) {
+				return false;
+			}
+			break;
 		case "CC": //close client
 			userSender.send("CC");
 			try {
@@ -82,7 +101,6 @@ public class User extends Thread {
 			return false;
 		}
 		return true;
-		
 	}
 	
 	public String getUsername() {
@@ -104,5 +122,12 @@ public class User extends Thread {
 			} catch (InterruptedException e) {System.out.println("Thread.sleep failed");}
 		}
 		userSender.send(s);
+	}
+	
+	public boolean isPressed(int key) {
+		if (key < 0 || key > userInputs.length) {
+			return false;
+		}
+		return userInputs[key];
 	}
 }

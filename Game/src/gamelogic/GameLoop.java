@@ -14,6 +14,8 @@ public class GameLoop implements Runnable {
 
 	// game state
 	private GameState game;
+	
+	private int maxFPS = 2;
 
 	public GameLoop(Lobby l) {
 		game = new GameState(l);
@@ -28,6 +30,9 @@ public class GameLoop implements Runnable {
 	public void run() {
 		long start; // nanoseconds
 		long elapsed; // nanoseconds
+		long wait; // milliseconds
+		long target = 1_000 / maxFPS; // milliseconds
+
 
 		running = true;
 
@@ -36,24 +41,21 @@ public class GameLoop implements Runnable {
 
 			start = System.nanoTime();
 
-			update();
-			render();
+			game.update();
+			game.render();
 
-			// added for testing. REMOVE!
-			try {
-				thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 			elapsed = System.nanoTime() - start;
+
+			if (elapsed / 1_000_000 < target) {
+				wait = target - elapsed / 1_000_000;
+				try {
+					Thread.sleep(wait);
+					elapsed = System.nanoTime() - start;
+				} catch (InterruptedException e) {
+					logger.fatal("Thread.sleep failed");
+				}
+			}
 		}
-	}
 
-	private void update() {
-		game.update();
-	}
-
-	private void render() {
-		game.render();
 	}
 }
