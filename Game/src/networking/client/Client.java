@@ -16,7 +16,10 @@ public class Client extends Thread {
 
 	private ClientSender clientSender;
 	
+	private ClientDatabase database;
+	
 	public Client() {
+		database = new ClientDatabase();
 	}
 
 	@Override
@@ -76,6 +79,7 @@ public class Client extends Thread {
 			break;
 		case "TM":
 			System.out.println("###TILEMAP###");
+			database.setTm(message);
 			System.out.println(message);
 			break;
 		default:

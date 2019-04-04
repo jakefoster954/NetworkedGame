@@ -3,7 +3,10 @@ package gamelogic.sprite;
 import java.awt.Point;
 import java.util.LinkedList;
 
-public class Snake extends SnakeData {
+public class Snake {
+	
+	protected LinkedList<Point> position;
+	protected int bearing;
 	
 	public Snake() {
 		position = new LinkedList<Point>();
@@ -19,6 +22,10 @@ public class Snake extends SnakeData {
 	
 	public void update() {
 		moveSnake();
+	}
+	
+	protected void extendSnake() {
+		position.add(new Point(position.getLast()));
 	}
 	
 	protected void moveSnake() {
@@ -70,7 +77,16 @@ public class Snake extends SnakeData {
 		}
 	}
 	
+	//should this be public
 	public void setBearing(int bearing) {
 		this.bearing = bearing;
+	}
+	
+	public LinkedList<Point> getPosition() {
+		return position;
+	}
+	
+	public int getBearing() {
+		return bearing;
 	}
 }

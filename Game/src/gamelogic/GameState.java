@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.awt.event.KeyEvent;
 
+import gamelogic.sprite.GameData;
 import gamelogic.sprite.Snake;
 import gamelogic.tilemap.Tilemap;
 import networking.server.Lobby;
@@ -13,6 +14,8 @@ public class GameState extends State {
 	private Lobby lobby;
 	
 	private Snake snake;
+	
+	private GameData gameData;
 	
 	public GameState(Lobby lobby) {
 		this.lobby = lobby;
@@ -29,6 +32,7 @@ public class GameState extends State {
 			u.send("TM" + tm.toString());
 		}
 		
+		gameData = new GameData();
 		snake = new Snake();
 	}
 
@@ -42,7 +46,9 @@ public class GameState extends State {
 
 	@Override
 	protected void render() {
-		//System.out.println("render");
+		//set data for AI and Client
+		gameData.setPosition(snake.getPosition());
+		gameData.setBearing(snake.getBearing());
 	}
 	
 	public void checkInputs() {

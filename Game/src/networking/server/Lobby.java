@@ -42,9 +42,17 @@ public class Lobby extends Thread {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {System.out.println("Thread.sleep Failed");}
 				time = System.currentTimeMillis();
+				
+				if (!running) {
+					break;
+				}
 			}
 			
 			while(allReady()) {
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {System.out.println("Thread.sleep Failed");}
+				
 				if ((System.currentTimeMillis() - time) > delay) {
 					for (User u: users) {
 						u.setReady(false);
@@ -56,6 +64,10 @@ public class Lobby extends Thread {
 					GameLoop game = new GameLoop(this);
 					game.start();
 					running = false;
+					break;
+				}
+				
+				if (!running) {
 					break;
 				}
 			}
