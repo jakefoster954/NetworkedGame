@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
+import gamelogic.GameData;
+
 public class User extends Thread {
 
 	private ObjectInputStream in;
@@ -91,6 +93,7 @@ public class User extends Thread {
 			break;
 		case "CC": //close client
 			userSender.send("CC");
+			userSender.send(new GameData("CC"));
 			try {
 				userSender.join();
 			} catch (InterruptedException e) {System.out.println("userSender.join");}
@@ -122,6 +125,10 @@ public class User extends Thread {
 			} catch (InterruptedException e) {System.out.println("Thread.sleep failed");}
 		}
 		userSender.send(s);
+	}
+	
+	public void send(GameData gameData) {
+		userSender.send(gameData);
 	}
 	
 	public boolean isPressed(int key) {

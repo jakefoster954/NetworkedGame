@@ -7,6 +7,8 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
+import gamelogic.GameData;
+
 public class Client extends Thread {
 
 	// logger
@@ -18,7 +20,11 @@ public class Client extends Thread {
 	
 	private ClientDatabase database;
 	
+	private enum State {LOBBY, GAME};
+	private State currentState;
+	
 	public Client() {
+		currentState = State.LOBBY;
 		database = new ClientDatabase();
 	}
 
@@ -37,8 +43,15 @@ public class Client extends Thread {
 			clientSender.start();
 
 			while (running) {
-				String serverMessage = (String)in.readObject();
-				if (!decodeMessage(serverMessage)) System.out.println("Invalid message format");
+				switch (currentState) {
+				case LOBBY:
+					String serverMessage = (String)in.readObject();
+					if (!decodeMessage(serverMessage)) System.out.println("Invalid message format");
+					break;
+				case GAME:
+					GameData gameData = (GameData)in.readObject();
+					break;
+				}
 			}
 
 			// when the client sender terminates
@@ -81,6 +94,7 @@ public class Client extends Thread {
 			System.out.println("###TILEMAP###");
 			database.setTm(message);
 			System.out.println(message);
+			currentState = State.GAME;
 			break;
 		default:
 			return false;

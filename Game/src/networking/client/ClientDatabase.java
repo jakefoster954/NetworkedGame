@@ -1,6 +1,6 @@
 package networking.client;
 
-import gamelogic.sprite.GameData;
+import gamelogic.GameData;
 
 public class ClientDatabase {
 

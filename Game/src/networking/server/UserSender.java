@@ -5,16 +5,24 @@ import java.io.ObjectOutputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import gamelogic.GameData;
+
 public class UserSender extends Thread {
 
 	private ObjectOutputStream out;
 	private boolean running;
+
+	private enum State {LOBBY, GAME};
+	private State currentState;
 	
-	private BlockingQueue<String> messagesToSend;
+	private BlockingQueue<String> lobbyMessagesToSend;
+	private BlockingQueue<GameData> gameMessagesToSend;
 	
 	public UserSender(ObjectOutputStream out) {
 		this.out = out;
-		messagesToSend = new LinkedBlockingQueue<String>();
+		currentState = State.LOBBY;
+		lobbyMessagesToSend = new LinkedBlockingQueue<String>();
+		gameMessagesToSend = new LinkedBlockingQueue<GameData>();
 	}
 	@Override
 	public void run() {
@@ -24,11 +32,23 @@ public class UserSender extends Thread {
 		try {
 			while (running) {
 				// wait for message to be added to blocking queue
-				String message = messagesToSend.take();
-				out.writeObject(message);
-				
-				if (message.startsWith("CC")) {
-					running = false;
+				switch(currentState)  {
+				case LOBBY:
+					String lobbyMessage = lobbyMessagesToSend.take();
+					out.writeObject(lobbyMessage);
+					if (lobbyMessage.startsWith("CC")) {
+						running = false;
+					} else if (lobbyMessage.startsWith("TM")) {
+						currentState = currentState.GAME;
+					}
+					break;
+				case GAME:
+					GameData gameMessage = gameMessagesToSend.take();
+					out.writeObject(gameMessage);
+					if (!(gameMessage.getMessage() == null) && gameMessage.getMessage().startsWith("CC")) {
+						running = false;
+					}
+					break;
 				}
 			}
 		} catch (IOException e) {
@@ -41,6 +61,10 @@ public class UserSender extends Thread {
 	}
 	
 	public void send(String s) {
-		messagesToSend.add(s);
+		lobbyMessagesToSend.add(s);
+	}
+	
+	public void send(GameData gameData) {
+		gameMessagesToSend.add(gameData);
 	}
 }
