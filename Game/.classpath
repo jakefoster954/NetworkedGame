@@ -8,5 +8,23 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/home/jakefo98/Documents/Github/NetworkedGame/Game/lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-glfw-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-glfw-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-glfw-sources.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-glfw.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-openal-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-openal-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-openal-sources.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-openal.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengl-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengl-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengl-sources.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-stb-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-stb-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-stb-sources.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-stb.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl/lwjgl-opengl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

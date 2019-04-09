@@ -4,3 +4,8 @@ TODO
 
 IMPORTANT
 NEED TO SEND TILE MAP THEN THE GAME DATA!
+
+Playing around with the structure of game data and the data storage client side (Database)
+
+GRAPHICS
+need to add a starting state to the gsm. currently index out of bounds (get state(0))!
